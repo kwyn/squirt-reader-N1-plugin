@@ -37,8 +37,8 @@ export default class SquirtParser {
       nodes.push({
         word,
         ORP: word,
-        start: '',
-        end: '',
+        start: ' ',
+        end: ' ',
         length: word.length,
       });
       return nodes;
@@ -46,9 +46,9 @@ export default class SquirtParser {
     const ORP = this._getORPIndex(word);
     nodes.push({
       word,
-      ORP: word[ORP],
+      ORP: word[ORP] || ' ',
       start: word.slice(0, ORP),
-      end: word.slice(ORP + 1),
+      end: word.slice(ORP + 1) || ' ',
       length: word.length,
     });
     return nodes;

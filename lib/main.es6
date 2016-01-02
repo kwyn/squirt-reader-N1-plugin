@@ -10,6 +10,8 @@ import _ from 'lodash';
 
 import SquirtParser from './squirt-parser';
 import SquirtStore from './squirt.store';
+import SquirtNode from './squirt-node.component';
+
 class SquirtReader extends React.Component {
   static displayName = 'SquirtReader'
 
@@ -41,25 +43,40 @@ class SquirtReader extends React.Component {
         self.setState({error: error, node: null});
       });
   }
+  componentWillUnmount() {
+    console.log('Squirt Component unmouned')
+    SquirtStore.clearTimeouts();
+    if (this._storeUnlisten) {
+     this._storeUnlisten();
+   }
+  }
 
   render() {
     if (this.state.error) {
-      return <div className="phishingIndicator error">{this.state.error.message}</div>
+      return <div className="squirt__container error">{this.state.error.message}</div>
     }
 
     if (!this.state.node) {
       // TODO: display controlls
       return null;
     }
-    return <div className="phishingIndicator">
-      <span className="squirt_start">{this.state.node.start}</span>
-      <span className="squirt_ORP">{this.state.node.ORP}</span>
-      <span className="squirt_end">{this.state.node.end}</span>
+    return <div className="squirt__container">
+      <div className="squirt__reader">
+          <div className="squirt__nodes">
+            <div className="squirt__node start">
+              <div className="text">{this.state.node.start}</div>
+            </div>
+            <div className="squirt__node ORP">{this.state.node.ORP}</div>
+            <div className="squirt__node end">{this.state.node.end}</div>
+          </div>
+      </div>
     </div>
   }
 
   _squirtStoreChange(messageId, state) {
-    this.setState({error: null, node: state})
+    if (messageId = 'squirt.nextNode') {
+      this.setState({error: null, node: state})
+    }
   }
 }
 
@@ -81,9 +98,5 @@ export function serialize() {
 // watching any files, holding external resources, providing commands or
 // subscribing to events, release them here.
 export function deactivate() {
-  PreferencesUIStore.unregisterPreferencesTab(_tab.tabId);
-
-  ExtensionRegistry.MessageView.unregister(MessageLoaderExtension);
-  ComponentRegistry.unregister(ComposerLoader)
   ComponentRegistry.unregister(MessageLoaderHeader)
 }

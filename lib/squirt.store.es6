@@ -71,7 +71,9 @@ export default class SquirtStore extends NylasStore {
     this.lastNodeIndex = 0;
     this.nodeIndex = 0;
   }
-
+  clearTimeouts() {
+    clearTimeout(this.nextNodeTimeoutId);
+  }
   _getDelay(node, jumped) {
     const word = node.word;
     // If jumped to position, give longest delay to allow for readjustment
@@ -113,7 +115,20 @@ export default class SquirtStore extends NylasStore {
     if (this.paused) return;
 
     const delay = this.intervalMilliseconds * this._getDelay(this.lastNode, this.jumped);
+    clearTimeout(this.nextNodetimeoutId);
     this.nextNodetimeoutId = setTimeout(this._nextNode.bind(this), delay);
+  }
+  calcNodeOffsets(node) {
+    console.log('node', node);
+    if (node.children.length !== 3) {
+      console.log('wat', node);
+    }
+    // Get  width of start ORP
+    const startWidth = node.children[0].getBoundingClientRect().width;
+    const ORPWidth = node.children[1].getBoundingClientRect().width;
+    // start width + ORP/2 = offset
+    const offset = startWidth + Math.floor(ORPWidth / 2);
+    this.trigger('squirt.offset', offset);
   }
 }
 

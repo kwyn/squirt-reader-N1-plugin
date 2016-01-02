@@ -1,19 +1,47 @@
 @import "ui-variables";
 @import "ui-mixins";
 
-.my-package .btn {
-
-}
-
-
-.phishingIndicator {
+.squirt__container {
+    height: 4em;
     display: block;
     box-sizing: border-box;
     -webkit-print-color-adjust: exact;
-    padding: 8px 12px;
     margin-bottom: 5px;
     border: 1px solid rgb(235, 204, 209);
     border-radius: 4px;
-    color: rgb(169, 68, 66);
-    background-color: rgb(242, 222, 222);
+    color: rgb(33,33, 33);
+    background-color: rgb(246, 246, 246);
+}
+
+// .squirt__carousel {
+//   display: block;
+//   position: absolute;
+//   width: 55%;
+//   left: 45%;
+//   height: 100%;
+//   border-left: 1px solid rgba(0, 0, 0, 0.2);
+// }
+
+.squirt__nodes {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  margin-top: 1.25em;
+}
+.squirt__node {
+  display: flex;
+  &.start {
+    flex-grow: 1;
+    .text {
+      margin-left: auto;
+    }
+  }
+  &.end {
+    flex-grow: 1;
+  }
+  // .end {}
+  &.ORP {
+    flex-shrink:0;
+    color: rgb(3, 144, 255);
+  }
 }
