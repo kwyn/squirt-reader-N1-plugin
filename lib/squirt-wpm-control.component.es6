@@ -1,10 +1,8 @@
 import { React } from 'nylas-exports';
 
 import SquirtStore from './squirt.store';
-import SquirtWPMControl from './squirt-wpm-control.component';
-import SquirtPlayPauseToggle from './squirt-play-pause-toggle.component';
-export default class SquirtControls extends React.Component {
-  static displayName = 'SquirtControls'
+export default class SquirtWPMControl extends React.Component {
+  static displayName = 'SquirtWPMControl'
 
   constructor(props) {
     super(props);
@@ -28,13 +26,20 @@ export default class SquirtControls extends React.Component {
 
   //  <button className="squirt__button--play"></button>
   render() {
-    return <div className="squirt__controls">
-       <SquirtPlayPauseToggle/>
-       <SquirtWPMControl/>
-     </div>
+    return  <div className="wpm__container">
+         <button
+           className="wpm__decrement fa fa-chevron-left"
+           onClick={::SquirtStore.decrementWpm}/>
+         <div className="wpm__value">{this.state.wpm}</div>
+         <button
+           className="wpm__increment fa fa-chevron-right"
+           onClick={::SquirtStore.incrementWpm}/>
+       </div>
    }
 
   _squirtStoreChange(messageId, state) {
-
+     if (messageId === 'squirt.updateWpm') {
+       this.setState({wpm: state})
+     }
   }
 }

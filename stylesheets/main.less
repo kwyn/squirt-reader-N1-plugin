@@ -29,6 +29,7 @@
   height: @reader-height;
   border-left: 1px solid rgba(0, 0, 0, 0.2);
 }
+
 @reader-top-offset: ( @reader-height / 2.1) - @reader-font-size;
 .squirt__node {
   font-size: @reader-font-size;
@@ -58,12 +59,16 @@
 
 button{
   max-height: 100%;
+  background-color: transparent;
+  border: none;
+  &:hover {
+    cursor: pointer;
+  }
   &.wpm__decrement, &.wpm__increment {
-    background-color: transparent;
     flex-grow: 1;
-    border: none;
-    &hover {
-      cursor: pointer;
-    }
+  }
+  &.pause-play__toggle {
+    flex-grow: 3
+
   }
 }

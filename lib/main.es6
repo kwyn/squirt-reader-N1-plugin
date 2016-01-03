@@ -27,7 +27,7 @@ class SquirtReader extends React.Component {
   }
 
   componentWillMount() {
-    this.setState({error: null, node: null})
+    this.setState({ready: false, error: null, node: null})
   }
 
   componentDidMount() {
@@ -37,16 +37,17 @@ class SquirtReader extends React.Component {
       .parse(this.props.message.body)
       .then(::this.parser.buildNodes)
       .then(::SquirtStore.setNodes)
-      .then(::SquirtStore.play)
+      // .then(::SquirtStore.play)
       .catch((error) => {
         // TODO: Set error message
         console.error(error);
-        self.setState({error: error, node: null});
+        self.setState({error: error, node: null, ready: false});
       });
   }
 
   componentWillUnmount() {
     SquirtStore.clearTimeouts();
+    SquirtStore.pause();
     if (this._storeUnlisten) {
       this._storeUnlisten();
     }
@@ -57,22 +58,25 @@ class SquirtReader extends React.Component {
       return <div className="squirt__container error">{this.state.error.message}</div>
     }
 
-    if (!this.state.node) {
+    if (!this.state.ready) {
       // TODO: display controlls
-      return <div className="squirt__container error">No text found</div>;
+      return <div className="squirt__container error">Parsing Text ...</div>;
     }
 
     return <div className="squirt__container">
         <SquirtControls/>
-      <div className="squirt__reader">
-        <SquirtNode node={this.state.node} />
+        <div className="squirt__reader">
+          <SquirtNode node={this.state.node} />
+        </div>
       </div>
-    </div>
   }
 
   _squirtStoreChange(messageId, state) {
     if (messageId === 'squirt.nextWord') {
-      this.setState({error: null, node: state})
+      this.setState({error: null, node: state, ready: true})
+    }
+    if (messageId === 'squirt.ready') {
+      this.setState({error: null, node: SquirtStore.lastNode, ready: true})
     }
   }
 }

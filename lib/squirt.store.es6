@@ -41,7 +41,7 @@ export default class SquirtStore extends NylasStore {
 
   play() {
     this.paused = false;
-    this.trigger('squirt.hideWPMSelector');
+    this.trigger('squirt.play');
     this._nextNode();
   }
 
@@ -50,6 +50,7 @@ export default class SquirtStore extends NylasStore {
     clearTimeout(this.nextNodeTimeoutId);
     this.trigger('squirt.pause');
   }
+
   //
   // restart() {
   //
@@ -77,12 +78,14 @@ export default class SquirtStore extends NylasStore {
     this.intervalMilliseconds = 60 * 1000 / wpm;
     this.trigger('squirt.updateWpm', this.getWpm());
   }
+
   incrementWpm() {
     if (this.wpm >= this.maxWpm) {
       return;
     }
     this.setWpm(this.wpm + this.wpmStep);
   }
+
   decrementWpm() {
     if (this.wpm <= this.minWpm) {
       return;
@@ -91,11 +94,19 @@ export default class SquirtStore extends NylasStore {
   }
 
   setNodes(nodes) {
+    if (!nodes.length) {
+      throw new Error('No text nodes created');
+    }
     this.nodes = nodes;
     this.lastNode = {};
     this.lastNodeIndex = 0;
     this.nodeIndex = 0;
+    this.trigger('squirt.ready')
   }
+
+  // _getRunTime() {
+  //
+  // }
 
   clearTimeouts() {
     clearTimeout(this.nextNodeTimeoutId);
@@ -139,7 +150,7 @@ export default class SquirtStore extends NylasStore {
     this.trigger('squirt.nextWord', this.lastNode);
     this.lastNode = this.nodes[nextIndex];
 
-    if (this.paused) return;
+    if (this.paused || !this.lastNode) return;
 
     const delay = this.intervalMilliseconds * this._getDelay(this.lastNode, this.jumped);
     this.nextNodetimeoutId = setTimeout(this._nextNode.bind(this), delay);
