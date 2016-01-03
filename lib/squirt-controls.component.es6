@@ -3,6 +3,8 @@ import { React } from 'nylas-exports';
 import SquirtStore from './squirt.store';
 import SquirtWPMControl from './squirt-wpm-control.component';
 import SquirtPlayPauseToggle from './squirt-play-pause-toggle.component';
+import SquirtScrubber from './squirt-scrubber.component';
+
 export default class SquirtControls extends React.Component {
   static displayName = 'SquirtControls'
 
@@ -30,6 +32,7 @@ export default class SquirtControls extends React.Component {
   render() {
     return <div className="squirt__controls">
        <SquirtPlayPauseToggle/>
+       <SquirtScrubber/>
        <SquirtWPMControl/>
      </div>
    }

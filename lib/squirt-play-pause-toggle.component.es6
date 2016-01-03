@@ -29,6 +29,7 @@ export default class SquirtPlayPauseToggle extends React.Component {
         className={buttonIcon + ' pause-play__toggle'}
         onClick={this::this._togglePlayPause}/>
   }
+
   _togglePlayPause() {
     if (this.state.paused) {
       SquirtStore.play();

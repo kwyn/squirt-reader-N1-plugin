@@ -66,6 +66,7 @@ class SquirtReader extends React.Component {
     return <div className="squirt__container">
         <SquirtControls/>
         <div className="squirt__reader">
+          <div className="squirt__reader-space"/>
           <SquirtNode node={this.state.node} />
         </div>
       </div>
@@ -76,7 +77,7 @@ class SquirtReader extends React.Component {
       this.setState({error: null, node: state, ready: true})
     }
     if (messageId === 'squirt.ready') {
-      this.setState({error: null, node: SquirtStore.lastNode, ready: true})
+      this.setState({error: null, node: {}, ready: true})
     }
   }
 }

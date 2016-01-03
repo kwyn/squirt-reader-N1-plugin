@@ -51,6 +51,11 @@ export default class SquirtStore extends NylasStore {
     this.trigger('squirt.pause');
   }
 
+  jump(index) {
+    this.jumped = true;
+    this.nodeIndex = index;
+  }
+
   //
   // restart() {
   //
@@ -71,7 +76,12 @@ export default class SquirtStore extends NylasStore {
   getMinWpm() {
     return _.clone(this.minWpm);
   }
-
+  getNumberOfNodes() {
+    return _.get(this, 'nodes.length', 0)
+  }
+  getCurrentIndex() {
+    return _.get(this, 'nodeIndex');
+  }
   setWpm(wpm) {
     this.wpm = wpm;
     // 60 seconds * 1000 milliseconds / words per minute
@@ -101,7 +111,7 @@ export default class SquirtStore extends NylasStore {
     this.lastNode = {};
     this.lastNodeIndex = 0;
     this.nodeIndex = 0;
-    this.trigger('squirt.ready')
+    this.trigger('squirt.ready');
   }
 
   // _getRunTime() {
@@ -153,13 +163,14 @@ export default class SquirtStore extends NylasStore {
     if (this.paused || !this.lastNode) return;
 
     const delay = this.intervalMilliseconds * this._getDelay(this.lastNode, this.jumped);
+    this.jumped = false;
     this.nextNodetimeoutId = setTimeout(this._nextNode.bind(this), delay);
     return;
   }
 
   calcNodeOffsets(node) {
     if (node.children.length !== 3) {
-      console.log('wat', node);
+      console.log('Unexpected number of node children:', node);
     }
     // Get  width of start ORP
     const startWidth = node.children[0].getBoundingClientRect().width;

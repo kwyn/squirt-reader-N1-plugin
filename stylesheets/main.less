@@ -5,17 +5,19 @@
 @control-height: 2em;
 @reader-height: @widget-height - @control-height;
 @reader-font-size: 1.5em;
+@widget-background-color: rgb(246, 246, 246);
 
 .squirt__container {
     min-height: @widget-height;
     display: block;
     box-sizing: border-box;
     -webkit-print-color-adjust: exact;
-    margin-bottom: .2em;
+    margin-bottom: 1em;
+    margin-top: 1em;
     border: .1em solid rgb(235, 204, 209);
-    border-radius: .1em;
+    border-radius: .25em;
     color: rgb(33,33, 33);
-    background-color: rgb(246, 246, 246);
+    background-color: @widget-background-color;
     &.error {
       background-color: @background-color-error;
     }
@@ -32,10 +34,20 @@
 
 @reader-top-offset: ( @reader-height / 2.1) - @reader-font-size;
 .squirt__node {
+  position:relative;
   font-size: @reader-font-size;
   margin-top: @reader-top-offset;
 }
 
+@spacing: .5em;
+.squirt__reader-space {
+  position: absolute;
+  width: 2px;
+  left: -1px;
+  top: @reader-top-offset + @spacing;
+  height: @reader-font-size + (2 * @spacing);
+  background-color: @widget-background-color;
+}
 .ORP {
   color: rgb(3, 144, 255);
 }
@@ -43,6 +55,7 @@
 .squirt__controls {
   display: flex;
   flex-direction: row;
+  align-items: center;
   height: @control-height;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
@@ -56,6 +69,61 @@
 .wpm__value {
   max-height:100%;
 }
+@range-track-color: rgba(210, 204, 209, 0.78);
+@slider-thumb-radius: 1em;
+@slider-track-height: 0.2em;
+@slider-thumb-color: #9f9ea0;
+
+.squirt__scrubber {
+  flex-grow: 3;
+}
+//
+// /**
+//  * Rangeslider
+//  */
+// .rangeslider {
+// 	margin: 20px 0;
+// 	position: relative;
+//   background: #e6e6e6;
+//   .rangeslider__fill, .rangeslider__handle {
+//   	position: absolute;
+//   }
+//   &, .rangeslider__fill {
+//   	display: block;
+//   	box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3);
+//   }
+//   .rangeslider__handle {
+//     background: #fff;
+//     border: 1px solid #ccc;
+//     cursor: pointer;
+//     display: inline-block;
+//     position: absolute;
+//     &:active {
+//       background: #999;
+//     }
+//   }
+// }
+//
+// /**
+//  * Rangeslider - Horizontal slider
+//  */
+// .rangeslider-horizontal {
+// 	height: 20px;
+// 	border-radius: 10px;
+// 	.rangeslider__fill {
+// 		height: 100%;
+// 		background: #27ae60;
+// 		border-radius: 10px;
+// 		top: 0;
+// 	}
+// 	.rangeslider__handle {
+// 		width: 40px;
+// 		height: 40px;
+// 		border-radius: 40px;
+// 		top: -10px;
+// 	}
+// }
+
 
 button{
   max-height: 100%;
@@ -68,7 +136,6 @@ button{
     flex-grow: 1;
   }
   &.pause-play__toggle {
-    flex-grow: 3
-
+    flex-grow: 1
   }
 }

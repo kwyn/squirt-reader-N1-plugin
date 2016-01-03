@@ -11,7 +11,7 @@ export default class SquirtWPMControl extends React.Component {
   }
 
   componentWillMount() {
-    this.setState({wpm: this.minWpm })
+    this.setState({wpm: SquirtStore.getWpm()})
   }
 
   componentDidMount() {
@@ -30,7 +30,7 @@ export default class SquirtWPMControl extends React.Component {
          <button
            className="wpm__decrement fa fa-chevron-left"
            onClick={::SquirtStore.decrementWpm}/>
-         <div className="wpm__value">{this.state.wpm}</div>
+         <div className="wpm__value">{this.state.wpm} wpm</div>
          <button
            className="wpm__increment fa fa-chevron-right"
            onClick={::SquirtStore.incrementWpm}/>

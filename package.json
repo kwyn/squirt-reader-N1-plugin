@@ -22,6 +22,7 @@
     "htmlparser2": "3.9.0",
     "lodash": "3.10.1",
     "react": "0.14.3",
+    "react-rangeslider": "1.0.0",
     "readabilitySAX": "1.6.1",
     "reflux": "0.3.0"
   },
