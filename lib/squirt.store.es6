@@ -8,6 +8,10 @@ export default class SquirtStore extends NylasStore {
 
     this._state = {};
 
+    this.maxWpm = 1000;
+    this.minWpm = 200;
+    this.wpmStep = 20;
+
     // Words per minute
     this.wpm = 200;
     this.nextNodeTimeoutId = null;
@@ -59,10 +63,31 @@ export default class SquirtStore extends NylasStore {
     return _.clone(this.wpm);
   }
 
+  getMaxWpm() {
+    return _.clone(this.maxWpm);
+  }
+
+  getMinWpm() {
+    return _.clone(this.minWpm);
+  }
+
   setWpm(wpm) {
     this.wpm = wpm;
     // 60 seconds * 1000 milliseconds / words per minute
     this.intervalMilliseconds = 60 * 1000 / wpm;
+    this.trigger('squirt.updateWpm', this.getWpm());
+  }
+  incrementWpm() {
+    if (this.wpm >= this.maxWpm) {
+      return;
+    }
+    this.setWpm(this.wpm + this.wpmStep);
+  }
+  decrementWpm() {
+    if (this.wpm <= this.minWpm) {
+      return;
+    }
+    this.setWpm(this.wpm - this.wpmStep);
   }
 
   setNodes(nodes) {
@@ -71,9 +96,11 @@ export default class SquirtStore extends NylasStore {
     this.lastNodeIndex = 0;
     this.nodeIndex = 0;
   }
+
   clearTimeouts() {
     clearTimeout(this.nextNodeTimeoutId);
   }
+
   _getDelay(node, jumped) {
     const word = node.word;
     // If jumped to position, give longest delay to allow for readjustment
@@ -105,7 +132,7 @@ export default class SquirtStore extends NylasStore {
 
   _nextNode() {
     const nextIndex = this._incrementNodeIndex();
-    if (nextIndex >= this.nodes.length) {
+    if (nextIndex > this.nodes.length) {
       this.trigger('squirt.finalWord');
       return;
     }
@@ -115,10 +142,10 @@ export default class SquirtStore extends NylasStore {
     if (this.paused) return;
 
     const delay = this.intervalMilliseconds * this._getDelay(this.lastNode, this.jumped);
-    clearTimeout(this.nextNodetimeoutId);
     this.nextNodetimeoutId = setTimeout(this._nextNode.bind(this), delay);
     return;
   }
+
   calcNodeOffsets(node) {
     if (node.children.length !== 3) {
       console.log('wat', node);

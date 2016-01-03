@@ -3,10 +3,11 @@ import { React } from 'nylas-exports';
 import SquirtStore from './squirt.store';
 
 export default class SquirtNode extends React.Component {
-  static displayName = 'SquirtNode'
+  static displayName = 'SquirtNode';
   static propTypes = {
     node: React.PropTypes.object
   }
+
   constructor(props) {
     super(props);
   }
@@ -31,6 +32,7 @@ export default class SquirtNode extends React.Component {
     const newOffset = nextState.calculatedOffset !== this.state.calculatedOffset;
     return newNode || newOffset;
   }
+
   componentWillUnmount() {
     if (this._storeUnlisten) {
       this._storeUnlisten();

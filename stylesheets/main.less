@@ -1,31 +1,69 @@
 @import "ui-variables";
 @import "ui-mixins";
 
+@widget-height: 8em;
+@control-height: 2em;
+@reader-height: @widget-height - @control-height;
+@reader-font-size: 1.5em;
+
 .squirt__container {
-    height: 4em;
+    min-height: @widget-height;
     display: block;
     box-sizing: border-box;
     -webkit-print-color-adjust: exact;
-    margin-bottom: 5px;
-    border: 1px solid rgb(235, 204, 209);
-    border-radius: 4px;
+    margin-bottom: .2em;
+    border: .1em solid rgb(235, 204, 209);
+    border-radius: .1em;
     color: rgb(33,33, 33);
     background-color: rgb(246, 246, 246);
+    &.error {
+      background-color: @background-color-error;
+    }
 }
 
 .squirt__reader {
   display: block;
   position: absolute;
-  width: 55%;
-  left: 45%;
-  height: 100%;
+  width: 50%;
+  left: 50%;
+  height: @reader-height;
   border-left: 1px solid rgba(0, 0, 0, 0.2);
 }
-
+@reader-top-offset: ( @reader-height / 2.1) - @reader-font-size;
 .squirt__node {
-  margin-top: 1.25em;
+  font-size: @reader-font-size;
+  margin-top: @reader-top-offset;
 }
 
 .ORP {
   color: rgb(3, 144, 255);
+}
+
+.squirt__controls {
+  display: flex;
+  flex-direction: row;
+  height: @control-height;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.wpm__container {
+  flex-grow: 1;
+  display: flex;
+  max-height: 100%;
+}
+
+.wpm__value {
+  max-height:100%;
+}
+
+button{
+  max-height: 100%;
+  &.wpm__decrement, &.wpm__increment {
+    background-color: transparent;
+    flex-grow: 1;
+    border: none;
+    &hover {
+      cursor: pointer;
+    }
+  }
 }

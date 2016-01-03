@@ -14,3 +14,5 @@
 [ ] control components to set wpm, slider preferred
 [ ] key bindings for play pause jump etc
 [ ] save settings in serialize and deserialize methods
+
+## Bugs

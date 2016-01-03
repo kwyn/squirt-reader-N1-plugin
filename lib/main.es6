@@ -11,6 +11,7 @@ import _ from 'lodash';
 import SquirtParser from './squirt-parser';
 import SquirtStore from './squirt.store';
 import SquirtNode from './squirt-node.component';
+import SquirtControls from './squirt-controls.component';
 
 class SquirtReader extends React.Component {
   static displayName = 'SquirtReader'
@@ -24,7 +25,6 @@ class SquirtReader extends React.Component {
     this.parser = new SquirtParser();
     this.calculatedOffset = 0;
   }
-
 
   componentWillMount() {
     this.setState({error: null, node: null})
@@ -40,12 +40,12 @@ class SquirtReader extends React.Component {
       .then(::SquirtStore.play)
       .catch((error) => {
         // TODO: Set error message
-        // console.error(error);
+        console.error(error);
         self.setState({error: error, node: null});
       });
   }
+
   componentWillUnmount() {
-    console.log('Squirt Component unmouned')
     SquirtStore.clearTimeouts();
     if (this._storeUnlisten) {
       this._storeUnlisten();
@@ -63,6 +63,7 @@ class SquirtReader extends React.Component {
     }
 
     return <div className="squirt__container">
+        <SquirtControls/>
       <div className="squirt__reader">
         <SquirtNode node={this.state.node} />
       </div>
