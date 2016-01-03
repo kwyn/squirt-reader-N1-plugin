@@ -77,7 +77,6 @@ export default class SquirtParser {
   }
 
   buildNodes(text) {
-    console.log('build node context', this);
     const startSequence = '3\n 2\n 1\n ';
     const cleanedText = startSequence + text.trim('\n').replace(/\s+\n/g, '\n');
     const words = this._text2Words(cleanedText);

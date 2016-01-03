@@ -22,6 +22,7 @@ class SquirtReader extends React.Component {
   constructor(props) {
     super(props);
     this.parser = new SquirtParser();
+    this.calculatedOffset = 0;
   }
 
 
@@ -47,8 +48,8 @@ class SquirtReader extends React.Component {
     console.log('Squirt Component unmouned')
     SquirtStore.clearTimeouts();
     if (this._storeUnlisten) {
-     this._storeUnlisten();
-   }
+      this._storeUnlisten();
+    }
   }
 
   render() {
@@ -58,23 +59,18 @@ class SquirtReader extends React.Component {
 
     if (!this.state.node) {
       // TODO: display controlls
-      return null;
+      return <div className="squirt__container error">No text found</div>;
     }
+
     return <div className="squirt__container">
       <div className="squirt__reader">
-          <div className="squirt__nodes">
-            <div className="squirt__node start">
-              <div className="text">{this.state.node.start}</div>
-            </div>
-            <div className="squirt__node ORP">{this.state.node.ORP}</div>
-            <div className="squirt__node end">{this.state.node.end}</div>
-          </div>
+        <SquirtNode node={this.state.node} />
       </div>
     </div>
   }
 
   _squirtStoreChange(messageId, state) {
-    if (messageId = 'squirt.nextNode') {
+    if (messageId === 'squirt.nextWord') {
       this.setState({error: null, node: state})
     }
   }
