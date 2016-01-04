@@ -9,7 +9,7 @@ export default class SquirtrunTime extends React.Component {
   }
 
   componentWillMount() {
-    this.setState({runTime: SquirtStore.getRunTime()})
+    this.setState({runTime: SquirtStore.getRunTimeString()})
   }
 
   componentDidMount() {
@@ -23,12 +23,12 @@ export default class SquirtrunTime extends React.Component {
   }
 
   render() {
-    return  <div className="squirt__run-time">{this.state.runTime} mins</div>
+    return  <div className="squirt__run-time">{this.state.runTime}</div>
    }
 
   _squirtStoreChange(messageId, state) {
      if (messageId === 'squirt.updateWpm') {
-       this.setState({runTime: SquirtStore.getRunTime()})
+       this.setState({runTime: SquirtStore.getRunTimeString()})
      }
   }
 }

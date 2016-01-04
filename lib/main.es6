@@ -24,6 +24,7 @@ class SquirtReader extends React.Component {
     super(props);
     this.parser = new SquirtParser();
     this.calculatedOffset = 0;
+    this.showReader = false;
   }
 
   componentWillMount() {
@@ -39,7 +40,6 @@ class SquirtReader extends React.Component {
       .then(::SquirtStore.setNodes)
       // .then(::SquirtStore.play)
       .catch((error) => {
-        // TODO: Set error message
         console.error(error);
         self.setState({error: error, node: null, ready: false});
       });
@@ -54,25 +54,44 @@ class SquirtReader extends React.Component {
   }
 
   render() {
+    let readerStyles = { visibilitity: 'hidden'};
+    let widgetStyles = { 'min-height': '2em'};
+
     if (this.state.error) {
-      return <div className="squirt__container error">{this.state.error.message}</div>
+      return <div
+          className="squirt__container error"
+          style={widgetStyles}>
+          {this.state.error.message}
+        </div>
     }
 
     if (!this.state.ready) {
       // TODO: display controlls
-      return <div className="squirt__container error">Parsing Text ...</div>;
+      return <div
+          className="squirt__container info"
+          style={widgetStyles}>Parsing Text ...</div>;
     }
 
-    return <div className="squirt__container">
-        <SquirtControls/>
-        <div className="squirt__reader">
+    let reader = null;
+
+    if (this.state.showReader) {
+      widgetStyles.height = '8em';
+      reader = <div className="squirt__reader">
           <div className="squirt__reader-space"/>
           <SquirtNode node={this.state.node} />
-        </div>
+        </div>;
+    }
+
+    return <div className="squirt__container" style={widgetStyles}>
+        <SquirtControls/>
+         {reader}
       </div>
   }
 
   _squirtStoreChange(messageId, state) {
+    if (messageId === 'squirt.play') {
+      this.setState({showReader: true})
+    }
     if (messageId === 'squirt.nextWord') {
       this.setState({error: null, node: state, ready: true})
     }

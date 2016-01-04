@@ -19,7 +19,16 @@
     color: rgb(33,33, 33);
     background-color: @widget-background-color;
     &.error {
+      padding-top: 0.2em;
+      text-align: center;
       background-color: @background-color-error;
+      border: none;
+    }
+    &.info {
+      padding-top: 0.2em;
+      text-align: center;
+      background-color: @background-color-info;
+      border:none;
     }
 }
 
@@ -48,6 +57,7 @@
   height: @reader-font-size + (2 * @spacing);
   background-color: @widget-background-color;
 }
+
 .ORP {
   color: rgb(3, 144, 255);
 }
@@ -76,10 +86,13 @@
 
 .squirt__scrubber {
   flex-grow: 3;
+  align-items: flex-end;
 }
 
 .squirt__run-time {
   flex-grow: 2;
+  justify-content: center;
+  text-align: center;
 }
 
 //

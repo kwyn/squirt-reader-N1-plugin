@@ -45,7 +45,7 @@ export default class SquirtWPMControl extends React.Component {
   }
 
   _squirtStoreChange(messageId, state) {
-     if (messageId === 'squirt.nextWord') {
+     if (messageId === 'squirt.nextWord' || messageId === 'squirt.jumped') {
         const index =  SquirtStore.getCurrentIndex();
         this.setState({nodeIndex: index});
      }

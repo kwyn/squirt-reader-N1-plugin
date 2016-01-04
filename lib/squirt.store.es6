@@ -54,6 +54,7 @@ export default class SquirtStore extends NylasStore {
   jump(index) {
     this.jumped = true;
     this.nodeIndex = index;
+    this.trigger('squirt.jumped');
   }
 
   //
@@ -116,13 +117,23 @@ export default class SquirtStore extends NylasStore {
   }
 
   getRunTime() {
-    const timeInMilliseconds = _.reduce(this.nodes, (time, node) => {
+    return _.reduce(this.nodes, (time, node) => {
       return time + (this.intervalMilliseconds * this._getDelay(node));
     }, 0);
-    // Time in minutes
-    return _.round(timeInMilliseconds / (1000 * 60), 2);
   }
-
+  getRunTimeString() {
+    const runTime = this.getRunTime();
+    const second = 1000;
+    const minute = second * 60;
+    // minutes
+    if (runTime >= minute) {
+      const minutes = runTime / minute;
+      return _.round(minutes, 2) + ' mins';
+    }
+    // seconds
+    const seconds = runTime / second;
+    return _.round(seconds) + ' secs';
+  }
   clearTimeouts() {
     clearTimeout(this.nextNodeTimeoutId);
   }
@@ -181,7 +192,9 @@ export default class SquirtStore extends NylasStore {
     const startWidth = node.children[0].getBoundingClientRect().width;
     const ORPWidth = node.children[1].getBoundingClientRect().width;
     // start width + ORP/2 = offset
-    const offset = startWidth + Math.floor(ORPWidth / 2);
+    // plus a fiddle-factor (ff)
+    const ff = 1;
+    const offset = startWidth + Math.floor(ORPWidth / 2) + ff;
     this.trigger('squirt.offset', -offset);
     return;
   }
