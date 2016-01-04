@@ -77,11 +77,12 @@ export default class SquirtStore extends NylasStore {
     return _.clone(this.minWpm);
   }
   getNumberOfNodes() {
-    return _.get(this, 'nodes.length', 0)
+    return _.get(this, 'nodes.length', 0);
   }
   getCurrentIndex() {
     return _.get(this, 'nodeIndex');
   }
+
   setWpm(wpm) {
     this.wpm = wpm;
     // 60 seconds * 1000 milliseconds / words per minute
@@ -114,9 +115,13 @@ export default class SquirtStore extends NylasStore {
     this.trigger('squirt.ready');
   }
 
-  // _getRunTime() {
-  //
-  // }
+  getRunTime() {
+    const timeInMilliseconds = _.reduce(this.nodes, (time, node) => {
+      return time + (this.intervalMilliseconds * this._getDelay(node));
+    }, 0);
+    // Time in minutes
+    return _.round(timeInMilliseconds / (1000 * 60), 2);
+  }
 
   clearTimeouts() {
     clearTimeout(this.nextNodeTimeoutId);
