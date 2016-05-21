@@ -10,7 +10,7 @@
     "test": "./node_modules/.bin/mocha --compilers es6:babel-core/register spec/*.es6"
   },
   "engines": {
-    "nylas": ">=0.3.29-1904c6f"
+    "nylas": ">=0.4.40"
   },
   "description": "Speed reader plugin for Nylas N1 Client",
   "dependencies": {

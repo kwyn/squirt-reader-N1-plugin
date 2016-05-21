@@ -14,9 +14,9 @@
     -webkit-print-color-adjust: exact;
     margin-bottom: 1em;
     margin-top: 1em;
-    border: .1em solid rgb(235, 204, 209);
+    border: .1em solid @border-color-primary;
     border-radius: .25em;
-    color: rgb(33,33, 33);
+    color: @text-color;
     background-color: @widget-background-color;
     &.error {
       padding-top: 0.2em;
@@ -38,7 +38,7 @@
   width: 50%;
   left: 50%;
   height: @reader-height;
-  border-left: 1px solid rgba(0, 0, 0, 0.2);
+  border-left: 1px solid @border-color-divider;
 }
 
 @reader-top-offset: ( @reader-height / 2.1) - @reader-font-size;
@@ -55,11 +55,11 @@
   left: -1px;
   top: @reader-top-offset + @spacing;
   height: @reader-font-size + (2 * @spacing);
-  background-color: @widget-background-color;
+  background-color: @background-primary;
 }
 
 .ORP {
-  color: rgb(3, 144, 255);
+  color: @text-color-link;
 }
 
 .squirt__controls {
@@ -67,7 +67,7 @@
   flex-direction: row;
   align-items: center;
   height: @control-height;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid @border-color-divider;
 }
 
 .wpm__container {
@@ -79,10 +79,11 @@
 .wpm__value {
   max-height:100%;
 }
-@range-track-color: rgba(210, 204, 209, 0.78);
+
+@range-track-color: @text-color-subtle;
 @slider-thumb-radius: 1em;
 @slider-track-height: 0.2em;
-@slider-thumb-color: #9f9ea0;
+@slider-thumb-color: @text-color-subtle;
 
 .squirt__scrubber {
   flex-grow: 3;
@@ -94,54 +95,6 @@
   justify-content: center;
   text-align: center;
 }
-
-//
-// /**
-//  * Rangeslider
-//  */
-// .rangeslider {
-// 	margin: 20px 0;
-// 	position: relative;
-//   background: #e6e6e6;
-//   .rangeslider__fill, .rangeslider__handle {
-//   	position: absolute;
-//   }
-//   &, .rangeslider__fill {
-//   	display: block;
-//   	box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3);
-//   }
-//   .rangeslider__handle {
-//     background: #fff;
-//     border: 1px solid #ccc;
-//     cursor: pointer;
-//     display: inline-block;
-//     position: absolute;
-//     &:active {
-//       background: #999;
-//     }
-//   }
-// }
-//
-// /**
-//  * Rangeslider - Horizontal slider
-//  */
-// .rangeslider-horizontal {
-// 	height: 20px;
-// 	border-radius: 10px;
-// 	.rangeslider__fill {
-// 		height: 100%;
-// 		background: #27ae60;
-// 		border-radius: 10px;
-// 		top: 0;
-// 	}
-// 	.rangeslider__handle {
-// 		width: 40px;
-// 		height: 40px;
-// 		border-radius: 40px;
-// 		top: -10px;
-// 	}
-// }
-
 
 button{
   max-height: 100%;
