@@ -1,4 +1,7 @@
-import { React } from 'nylas-exports';
+import {
+  React,
+  ReactDOM
+ } from 'nylas-exports';
 
 import SquirtStore from './squirt.store';
 
@@ -14,7 +17,7 @@ export default class SquirtNode extends React.Component {
 
   componentDidMount() {
     this._storeUnlisten = SquirtStore.listen(this::this._squirtStoreChange);
-    const node = React.findDOMNode(this);
+    const node = ReactDOM.findDOMNode(this);
     SquirtStore.calcNodeOffsets(node);
   }
 
@@ -23,7 +26,7 @@ export default class SquirtNode extends React.Component {
   }
 
   componentDidUpdate() {
-    const node = React.findDOMNode(this);
+    const node = ReactDOM.findDOMNode(this);
     SquirtStore.calcNodeOffsets(node);
   }
 
@@ -50,7 +53,6 @@ export default class SquirtNode extends React.Component {
          visibility: 'visible',
        }
     }
-    // return <div> wat </div>
     return <div className="squirt__node" style={styles}>
       <span className="start">{this.props.node.start}</span>
       <span className="ORP">{this.props.node.ORP}</span>
