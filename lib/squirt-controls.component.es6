@@ -12,7 +12,6 @@ export default class SquirtControls extends React.Component {
   constructor(props) {
     super(props);
   }
-  //  <button className="squirt__button--play"></button>
   render() {
     return <div className="squirt__controls">
        <SquirtPlayPauseToggle/>

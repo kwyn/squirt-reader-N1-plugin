@@ -11,7 +11,10 @@ export default class SquirtStore extends NylasStore {
     this.maxWpm = 1000;
     this.minWpm = 200;
     this.wpmStep = 20;
-
+    // Minimum length to display reader in ms
+    // Default is set to zero,
+    // User will eventually set through a settings page
+    this.minLength = 0;
     // Words per minute
     this.wpm = 200;
     this.nextNodeTimeoutId = null;
@@ -37,6 +40,10 @@ export default class SquirtStore extends NylasStore {
       'Mx.': true,
     };
     this.setWpm(this.wpm);
+  }
+
+  init(state) {
+    this.wpm = state.wpm || this.wpm;
   }
 
   play() {
@@ -121,6 +128,7 @@ export default class SquirtStore extends NylasStore {
       return time + (this.intervalMilliseconds * this._getDelay(node));
     }, 0);
   }
+
   getRunTimeString() {
     const runTime = this.getRunTime();
     const second = 1000;
@@ -198,6 +206,7 @@ export default class SquirtStore extends NylasStore {
     this.trigger('squirt.offset', -offset);
     return;
   }
+
 }
 
 export default new SquirtStore();

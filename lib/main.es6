@@ -1,6 +1,7 @@
 // Squirt Reader
 import {
   React,
+  ReactDOM,
   ComponentRegistry,
   MessageStore,
   Message,
@@ -55,7 +56,7 @@ class SquirtReader extends React.Component {
 
   render() {
     let readerStyles = { visibilitity: 'hidden'};
-    let widgetStyles = { 'min-height': '2em'};
+    let widgetStyles = { 'minHeight': '2em'};
 
     if (this.state.error) {
       return <div
@@ -82,6 +83,12 @@ class SquirtReader extends React.Component {
         </div>;
     }
 
+    // if (this.state.showSettings) {
+    //   reader = <div className="squirt__reader">
+    //       <SquirtSettings>
+    //     </div>;
+    // }
+
     return <div className="squirt__container" style={widgetStyles}>
         <SquirtControls/>
          {reader}
@@ -105,6 +112,7 @@ class SquirtReader extends React.Component {
 // saved state using `serialize` it is provided.
 //
 export function activate(state) {
+  SquirtStore.init(state);
   ComponentRegistry.register(SquirtReader, { role: 'message:BodyHeader' });
 }
 
@@ -112,6 +120,7 @@ export function activate(state) {
 // You can return a state object that will be passed back to your package
 // when it is re-activated.
 export function serialize() {
+  return { wpm: SquirtStore.getWpm() };
 }
 
 // This **optional** method is called when the window is shutting down,
@@ -119,5 +128,5 @@ export function serialize() {
 // watching any files, holding external resources, providing commands or
 // subscribing to events, release them here.
 export function deactivate() {
-  ComponentRegistry.unregister(MessageLoaderHeader)
+  ComponentRegistry.unregister(SquirtReader);
 }
