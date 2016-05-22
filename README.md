@@ -12,5 +12,5 @@
  - [x] control component for play/pause
  - [x] control component for jump forwards and backwards
  - [ ] key bindings for play pause jump etc
- - [ ] save settings in serialize and deserialize methods
+ - [x] save settings in serialize and deserialize methods
  - [ ] transition reader in after hitting play
