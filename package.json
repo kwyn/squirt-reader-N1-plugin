@@ -1,5 +1,6 @@
 {
-  "name": "SquirtReader",
+  "name": "Squirt Speed Reader",
+  "icon": "assets/squirt-reader-icon.png",
   "main": "./lib/main",
   "version": "0.1.0",
   "repository": {
