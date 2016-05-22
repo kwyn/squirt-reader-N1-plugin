@@ -11,12 +11,14 @@ export default class SquirtStore extends NylasStore {
     this.maxWpm = 1000;
     this.minWpm = 200;
     this.wpmStep = 20;
-    // Minimum length to display reader in ms
+    // Minimum length to display reader in # of words
     // Default is set to zero,
     // User will eventually set through a settings page
-    this.minLength = 0;
+    this.threshold = 0;
+    this.defaultWpm = 300;
+    this.showErrors = true;
     // Words per minute
-    this.wpm = 200;
+    this.wpm = this.defaultWpm;
     this.nextNodeTimeoutId = null;
     this.paused = true;
     this.nodes = [];
@@ -43,7 +45,17 @@ export default class SquirtStore extends NylasStore {
   }
 
   init(state) {
-    this.wpm = state.wpm || this.wpm;
+    this.wpmDefault = state.wpmDefualt || this.wpmDefault;
+    this.threshold = state.threshold || this.threshold;
+    this.showErrors = state.showErrors || this.showErrors;
+  }
+
+  serialize() {
+    return {
+      wpmDefault: this.wpmDefault,
+      threshold: this.threshold,
+      showErrors: this.showErrors,
+    }
   }
 
   play() {
@@ -84,9 +96,39 @@ export default class SquirtStore extends NylasStore {
   getMinWpm() {
     return _.clone(this.minWpm);
   }
+
+  getDefaultWpm() {
+    return _.clone(this.defaultWpm);
+  }
+
+  setDefaultWpm(newDefaultWpm) {
+    this.defaultWpm = newDefaultWpm;
+  }
+
+  getThreshold() {
+    return _.clone(this.threshold);
+  }
+
+  setThrehold(newThreshold) {
+    this.threshold = newThreshold;
+  }
+
+  setShowErrors(newShowErrors) {
+    this.showErrors = newShowErrors;
+  }
+
+  getShowErrors() {
+    return _.clone(this.showErrors);
+  }
+
+  isBelowThreshold() {
+    return this.getNumberOfNodes() < this.threshold;
+  }
+
   getNumberOfNodes() {
     return _.get(this, 'nodes.length', 0);
   }
+
   getCurrentIndex() {
     return _.get(this, 'nodeIndex');
   }
@@ -113,6 +155,7 @@ export default class SquirtStore extends NylasStore {
   }
 
   setNodes(nodes) {
+    console.log(nodes.length);
     if (!nodes.length) {
       throw new Error('No text nodes created');
     }

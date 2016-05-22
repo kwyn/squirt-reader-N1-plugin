@@ -67,7 +67,7 @@ export default class SquirtParser {
       length--;
       lastChar = word[word.length - 2];
     }
-    if (_.contains(punctuation, lastChar)) length--;
+    if (_.includes(punctuation, lastChar)) length--;
     // Edge case ORP for short words
     if (length <= 1) return 0;
     if (length === 2 || length === 3) return 1;

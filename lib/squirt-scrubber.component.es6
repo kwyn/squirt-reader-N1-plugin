@@ -26,7 +26,6 @@ export default class SquirtWPMControl extends React.Component {
     }
   }
 
-  //  <button className="squirt__button--play"></button>
   render() {
     return  <div className="squirt__scrubber">
       <input

@@ -4,6 +4,7 @@ import {
   ReactDOM,
   ComponentRegistry,
   MessageStore,
+  PreferencesUIStore,
   Message,
   Actions,
   FocusedContentStore} from 'nylas-exports';
@@ -13,6 +14,7 @@ import SquirtParser from './squirt-parser';
 import SquirtStore from './squirt.store';
 import SquirtNode from './squirt-node.component';
 import SquirtControls from './squirt-controls.component';
+import SquirtPreferences from './squirt-preferences.component';
 
 class SquirtReader extends React.Component {
   static displayName = 'SquirtReader'
@@ -29,7 +31,14 @@ class SquirtReader extends React.Component {
   }
 
   componentWillMount() {
-    this.setState({ready: false, error: null, node: null})
+    this.setState({
+      ready: false,
+      error: null,
+      node: null,
+      showErrors: SquirtStore.getShowErrors(),
+    });
+    // Set default wpm on component mount
+    SquirtStore.setWpm(SquirtStore.getDefaultWpm());
   }
 
   componentDidMount() {
@@ -55,19 +64,25 @@ class SquirtReader extends React.Component {
   }
 
   render() {
+    // Don't display anything if e-mail is below the threshold
+    if (this.state.belowThrehold) {
+      return null;
+    }
     let readerStyles = { visibilitity: 'hidden'};
     let widgetStyles = { 'minHeight': '2em'};
 
     if (this.state.error) {
-      return <div
-          className="squirt__container error"
-          style={widgetStyles}>
-          {this.state.error.message}
-        </div>
+      if (this.state.showErrors){
+        return <div
+            className="squirt__container error"
+            style={widgetStyles}>
+            {this.state.error.message}
+          </div>
+      }
+      return null;
     }
 
     if (!this.state.ready) {
-      // TODO: display controlls
       return <div
           className="squirt__container info"
           style={widgetStyles}>Parsing Text ...</div>;
@@ -83,12 +98,6 @@ class SquirtReader extends React.Component {
         </div>;
     }
 
-    // if (this.state.showSettings) {
-    //   reader = <div className="squirt__reader">
-    //       <SquirtSettings>
-    //     </div>;
-    // }
-
     return <div className="squirt__container" style={widgetStyles}>
         <SquirtControls/>
          {reader}
@@ -97,13 +106,18 @@ class SquirtReader extends React.Component {
 
   _squirtStoreChange(messageId, state) {
     if (messageId === 'squirt.play') {
-      this.setState({showReader: true})
+      this.setState({showReader: true});
     }
     if (messageId === 'squirt.nextWord') {
-      this.setState({error: null, node: state, ready: true})
+      this.setState({error: null, node: state, ready: true});
     }
     if (messageId === 'squirt.ready') {
-      this.setState({error: null, node: {}, ready: true})
+      this.setState({
+        error: null,
+        node: {},
+        ready: true ,
+        belowThrehold: SquirtStore.isBelowThreshold()
+      });
     }
   }
 }
@@ -114,13 +128,19 @@ class SquirtReader extends React.Component {
 export function activate(state) {
   SquirtStore.init(state);
   ComponentRegistry.register(SquirtReader, { role: 'message:BodyHeader' });
+  this.preferencesTab = new PreferencesUIStore.TabItem({
+    tabId: 'SquirtPreferences',
+    displayName: 'Squirt Preferences',
+    component: SquirtPreferences,
+  });
+  PreferencesUIStore.registerPreferencesTab(this.preferencesTab)
 }
 
 // Serialize is called when your package is about to be unmounted.
 // You can return a state object that will be passed back to your package
 // when it is re-activated.
 export function serialize() {
-  return { wpm: SquirtStore.getWpm() };
+  return SquirtStore.serialize();
 }
 
 // This **optional** method is called when the window is shutting down,
@@ -128,5 +148,6 @@ export function serialize() {
 // watching any files, holding external resources, providing commands or
 // subscribing to events, release them here.
 export function deactivate() {
+  PreferencesUIStore.unregisterPreferencesTab(this.preferencesTab.tabId);
   ComponentRegistry.unregister(SquirtReader);
 }
