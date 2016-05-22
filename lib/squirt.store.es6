@@ -45,17 +45,17 @@ export default class SquirtStore extends NylasStore {
   }
 
   init(state) {
-    this.wpmDefault = state.wpmDefualt || this.wpmDefault;
+    this.defaultWpm = state.defaultWpm || this.defaultWpm;
     this.threshold = state.threshold || this.threshold;
-    this.showErrors = state.showErrors || this.showErrors;
+    this.showErrors = state.showErrors != undefined ? state.showErrors : this.showErrors;
   }
 
   serialize() {
     return {
-      wpmDefault: this.wpmDefault,
+      defaultWpm: this.defaultWpm,
       threshold: this.threshold,
       showErrors: this.showErrors,
-    }
+    };
   }
 
   play() {
@@ -155,7 +155,6 @@ export default class SquirtStore extends NylasStore {
   }
 
   setNodes(nodes) {
-    console.log(nodes.length);
     if (!nodes.length) {
       throw new Error('No text nodes created');
     }
