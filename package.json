@@ -1,6 +1,6 @@
 {
-  "name": "SquirtSpeedReader",
-  "icon": "squirt-speed-reader-icon.png",
+  "name": "Squirt",
+  "icon": "squirt-icon.png",
   "main": "./lib/main",
   "version": "0.1.0",
   "repository": {
@@ -20,7 +20,7 @@
     "babel-preset-es2015": "6.3.13",
     "babel-preset-react": "6.3.13",
     "babel-register": "6.3.13",
-    "he": "^1.1.0",
+    "he": "1.1.0",
     "htmlparser2": "3.9.0",
     "lodash": "4.12.0",
     "react": "0.14.3",
