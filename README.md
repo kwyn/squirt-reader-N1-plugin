@@ -1,6 +1,18 @@
 
 ## Speed Reader for Long Messages
 
+## Install
+
+- Click on the "Clone and Download Button"
+- Click on the Download ZIP option
+- Extract the ZIP file
+- Go to preferences in N1
+- Click on the "Plugins" tab
+- Click "Install Plugin"
+- Navigate to your downloads folder and select the "squirt-reader-N1-plugin-master" file and click "open"
+
+- *Optional:* set your defaults in the Squirt Preferences tab that should appear post install. This will set a minimum length of the e-mails that the Squirt reader will show up.
+
 ## A lot TODO:
  - [x] Parse e-mail html to string
  - [x] build into nodes with ORP
