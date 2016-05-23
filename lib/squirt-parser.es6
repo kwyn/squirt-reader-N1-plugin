@@ -1,5 +1,6 @@
 const Readability = require('readabilitySAX').Readability;
 const Parser = require('htmlparser2/lib/Parser.js');
+const he = require('he');
 import _ from 'lodash';
 
 export default class SquirtParser {
@@ -18,8 +19,13 @@ export default class SquirtParser {
       parser.write(html);
       const article = readbaility.getArticle();
       if (!_.isString(article.text) || article.text.length === 0) {
-        reject(new Error('No Article Text Found'));
-        return;
+        // Fallback to pure text if no main article found
+        const text = readbaility.getText();
+        if (!_.isString(text) || text.length === 0) {
+          reject(new Error('No Article Text Found'));
+          return;
+        }
+        resolve(text);
       }
       resolve(article.text);
     });
@@ -78,7 +84,7 @@ export default class SquirtParser {
 
   buildNodes(text) {
     const startSequence = '3\n 2\n 1\n ';
-    const cleanedText = startSequence + text.trim('\n').replace(/\s+\n/g, '\n');
+    const cleanedText = startSequence + he.decode(text).trim('\n').replace(/\s+\n/g, '\n');
     const words = this._text2Words(cleanedText);
     return _.reduce(words, this._buildNode.bind(this), []);
   }

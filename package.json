@@ -1,6 +1,6 @@
 {
-  "name": "Squirt Speed Reader",
-  "icon": "assets/squirt-reader-icon.png",
+  "name": "SquirtSpeedReader",
+  "icon": "squirt-speed-reader-icon.png",
   "main": "./lib/main",
   "version": "0.1.0",
   "repository": {
@@ -13,13 +13,14 @@
   "engines": {
     "nylas": ">=0.4.40"
   },
-  "description": "Speed reader plugin for Nylas N1 Client",
+  "description": "Speed reader plugin for the Nylas N1 Client",
   "dependencies": {
     "babel-plugin-transform-class-properties": "6.3.13",
     "babel-plugin-transform-es2015-modules-commonjs": "6.3.16",
     "babel-preset-es2015": "6.3.13",
     "babel-preset-react": "6.3.13",
     "babel-register": "6.3.13",
+    "he": "^1.1.0",
     "htmlparser2": "3.9.0",
     "lodash": "4.12.0",
     "react": "0.14.3",
